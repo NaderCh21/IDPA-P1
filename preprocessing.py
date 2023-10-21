@@ -1,39 +1,45 @@
 import nltk
+# Download the necessary NLTK resource
+nltk.download('punkt')
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
-from sklearn.feature_extraction.text import CountVectorizer
 
-def preprocess(text):
+def create_term_context_matrix(documents, context_window=2):
     # Tokenization
-    tokens = word_tokenize(text)
+    tokens = [word_tokenize(doc) for doc in documents]
 
     # Remove punctuation and convert to lowercase
-    tokens = [word.lower() for word in tokens if word.isalnum()]
+    tokens = [[word.lower() for word in doc if word.isalnum()] for doc in tokens]
 
     # Remove stop words
     stop_words = set(stopwords.words('english'))
-    tokens = [word for word in tokens if word not in stop_words]
+    tokens = [[word for word in doc if word not in stop_words] for doc in tokens]
 
     # Stemming
     stemmer = PorterStemmer()
-    tokens = [stemmer.stem(word) for word in tokens]
+    tokens = [[stemmer.stem(word) for word in doc] for doc in tokens]
 
-    # Convert to document vector using bag-of-words representation
-    vectorizer = CountVectorizer()
-    document_vector = vectorizer.fit_transform([' '.join(tokens)])
+    # Build the term-context matrix
+    term_context_matrix = {}
+    for doc_tokens in tokens:
+        for i, target_word in enumerate(doc_tokens):
+            term_context_matrix.setdefault(target_word, {})
+            for j in range(max(0, i - context_window), min(i + context_window + 1, len(doc_tokens))):
+                if i != j:
+                    context_word = doc_tokens[j]
+                    term_context_matrix[target_word][context_word] = term_context_matrix[target_word].get(context_word, 0) + 1
 
-    return document_vector
+    return term_context_matrix
 
 # Example usage
-input_text = "Let's test this sentence: DUCK DUCK DUCK ALLY ALLY SUPER SUPER SUPER SUPER. We should get out of it the following output: 2 3 1 1 1 1 1 4 1"
-document_vector = preprocess(input_text)
-print("Document Vector:\n", document_vector.toarray())
+input_texts = [
+    "LAU is an American university located in Lebanon. It is one of the leading American universities in Lebanon.",
+    "USJ is a French university founded in Lebanon. It is a leading university in Lebanon.",
+    "LMA: the Lebanese military academy is the only military university in Lebanon.",
+]
 
-# preprocess is a function that takes a text as input and performs various preprocessing steps on it.
-# Tokenization: word_tokenize breaks the text into words or tokens.
-# Punctuation and Lowercasing: Punctuation is removed, and all words are converted to lowercase to ensure consistency.
-# Stopword Removal: Common words like 'and', 'the', 'is' (stop words) are removed using a predefined stop words list.
-# Stemming: Words are reduced to their root or base form using Porter stemming.
-# Document Vectorization: The preprocessed tokens are converted into a document vector using the bag-of-words approach via CountVectorizer. 
-# Each element in the vector represents the frequency of a word in the text.
+term_context_matrix = create_term_context_matrix(input_texts)
+# You can use this matrix for further processing, such as vectorization.
+print("Term-Context Matrix:\n", term_context_matrix)
