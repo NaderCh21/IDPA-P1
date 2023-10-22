@@ -1,4 +1,5 @@
 import numpy as np
+from preprocessing import term_context_matrix
 
 # Function to create vector representations from the term-context matrix
 def create_word_vectors(term_context_matrix):
@@ -13,17 +14,12 @@ def create_word_vectors(term_context_matrix):
         vector = [term_context_matrix[word].get(context_word, 0) for context_word in vocabulary]
         word_vectors.append(vector)
 
-    return np.array(word_vectors)
+    return word_vectors, vocabulary  # Return both word vectors and vocabulary
 
 # Example usage
-term_context_matrix = {
-    'cat': {'dog': 1},
-    'dog': {'cat': 1, 'brown': 1},
-    'brown': {'dog': 1},
-    'black': {'cat': 1}
-}
+word_vectors, vocabulary = create_word_vectors(term_context_matrix)
 
-word_vectors = create_word_vectors(term_context_matrix)
-
-# Now you have numerical vector representations for words
-print("Word Vectors:\n", word_vectors)
+# Now you have numerical vector representations for words and a list of corresponding words
+for word, vector in zip(vocabulary, word_vectors):
+    print(f"Word: {word}")
+    print(f"Vector: {vector}")
