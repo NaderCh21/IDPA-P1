@@ -1,7 +1,6 @@
 import nltk
 # Download the necessary NLTK resource
-nltk.download('punkt')
-nltk.download('stopwords')
+# nltk.download('punkt')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
@@ -23,6 +22,8 @@ def create_term_context_matrix(documents, context_window=2):
 
     # Build the term-context matrix
     term_context_matrix = {}
+    
+    # loop over every token/word
     for doc_tokens in tokens:
         for i, target_word in enumerate(doc_tokens):
             term_context_matrix.setdefault(target_word, {})
@@ -34,12 +35,12 @@ def create_term_context_matrix(documents, context_window=2):
     return term_context_matrix
 
 # Example usage
-input_texts = [
+input_text = [
     "LAU is an American university located in Lebanon. It is one of the leading American universities in Lebanon.",
     "USJ is a French university founded in Lebanon. It is a leading university in Lebanon.",
     "LMA: the Lebanese military academy is the only military university in Lebanon.",
 ]
 
-term_context_matrix = create_term_context_matrix(input_texts)
+term_context_matrix = create_term_context_matrix(input_text)
 # You can use this matrix for further processing, such as vectorization.
 print("Term-Context Matrix:\n", term_context_matrix)
