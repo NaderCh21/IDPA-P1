@@ -1,15 +1,13 @@
 import nltk
-# Download the necessary NLTK resource
-# nltk.download('punkt')
+# Download the necessary NLTK resources
+nltk.download('punkt')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 
-def create_term_context_matrix(documents, context_window=2):
-    # Tokenization
+def preprocess_documents(documents):
+    # Tokenization, removal of punctuation, and lowercase conversion
     tokens = [word_tokenize(doc) for doc in documents]
-
-    # Remove punctuation and convert to lowercase
     tokens = [[word.lower() for word in doc if word.isalnum()] for doc in tokens]
 
     # Remove stop words
@@ -20,10 +18,13 @@ def create_term_context_matrix(documents, context_window=2):
     stemmer = PorterStemmer()
     tokens = [[stemmer.stem(word) for word in doc] for doc in tokens]
 
+    return tokens
+
+def create_term_context_matrix(tokens, context_window=2):
     # Build the term-context matrix
     term_context_matrix = {}
-    
-    # loop over every token/word
+
+    # Loop over every token/word
     for doc_tokens in tokens:
         for i, target_word in enumerate(doc_tokens):
             term_context_matrix.setdefault(target_word, {})
@@ -36,11 +37,16 @@ def create_term_context_matrix(documents, context_window=2):
 
 # Example usage
 input_text = [
-    "LAU is an American university located in Lebanon. It is one of the leading American universities in Lebanon.",
-    "USJ is a French university founded in Lebanon. It is a leading university in Lebanon.",
-    "LMA: the Lebanese military academy is the only military university in Lebanon.",
+    'I like eating apple'
 ]
 
-term_context_matrix = create_term_context_matrix(input_text)
+# Preprocess the input documents
+preprocessed_input = preprocess_documents(input_text)
+
+print("\ntokens:\n" , preprocessed_input)
+
+# Create the term-context matrix
+term_context_matrix = create_term_context_matrix(preprocessed_input)
+
 # You can use this matrix for further processing, such as vectorization.
-print("Term-Context Matrix:\n", term_context_matrix)
+print("\nTerm-Context Matrix:\n", term_context_matrix)
