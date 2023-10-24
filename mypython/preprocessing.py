@@ -37,7 +37,9 @@ def create_term_context_matrix(tokens, context_window=2):
 
 # Example usage
 input_text = [
-    'I like eating apple'
+    'LAU is an American university in Lebanon. It is of the leading American universities in Lebanon.',
+    'USJ is a French university in Lebanon. It is a leading university in Lebanon.',
+    'LMA: the Lebanese military academy is the only military university in Lebanon.'
 ]
 
 # Preprocess the input documents
