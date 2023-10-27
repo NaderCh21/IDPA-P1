@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Result</title>
+  </head>
+  <body>
+    <ul>
+      {% for item in queryResult %}
+      <li>
+        <a href="{{item[0]}}" target="_blank"
+          >Result {{loop.index}}: {{item[0][13:]}}</a
+        >
+        <p>Similarity: {{item[1]}}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    <div>time: {{time}}</div>
+  </body>
+</html>
