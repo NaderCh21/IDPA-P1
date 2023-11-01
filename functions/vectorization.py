@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 import math
-from functions.preprocessing import *
+from preprocessing import *
 from pprint import pprint
 
 
