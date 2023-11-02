@@ -2,41 +2,38 @@ import math
 from pprint import pprint
 from functions.path_Sim import getSimPath
 
-
-def getSimVSM(queryVector, DocumentVector):
+def calculate_similarity_vsm(query_vector, document_vector):
     num = 0
 
-    for dimension1 in queryVector:
+    for dimension1 in query_vector:
         term1 = dimension1[0]
 
-        for dimension2 in DocumentVector:
+        for dimension2 in document_vector:
             term2 = dimension2[0]
             if term1 == term2:
-                simPath = getSimPath(dimension1[1], dimension2[1])
+                sim_path = getSimPath(dimension1[1], dimension2[1])
                 num = num + (
-                    queryVector[dimension1] * DocumentVector[dimension2] * simPath
+                    query_vector[dimension1] * document_vector[dimension2] * sim_path
                 )
 
-    sumVector1 = 0
-    sumVector2 = 0
-    for dimension in queryVector:
-        sumVector1 = sumVector1 + queryVector[dimension] ** 2
+    sum_vector1 = 0
+    sum_vector2 = 0
+    for dimension in query_vector:
+        sum_vector1 = sum_vector1 + query_vector[dimension] * 2
 
-    for dimension in DocumentVector:
-        sumVector2 = sumVector2 + DocumentVector[dimension] ** 2
+    for dimension in document_vector:
+        sum_vector2 = sum_vector2 + document_vector[dimension] ** 2
 
-    return num / math.sqrt(sumVector1 * sumVector2)
+    return num / math.sqrt(sum_vector1 * sum_vector2)
 
-
-# the following method will get the similarity of the query vector with each document in the
-# list of document provided
-# it will sort them by decreasing order after that
-def getAllSimVSM(queryVector, listOfDocumentVector):
-    simList = []
+# The following method calculates the similarity of the query vector with each document in the
+# list of document vectors provided and sorts them in decreasing order.
+def calculate_all_similarities_vsm(query_vector, list_of_document_vectors):
+    sim_list = []
     i = 0
-    for path in listOfDocumentVector:
-        sim = getSimVSM(queryVector, listOfDocumentVector[path])
-        simList.append((path, round(sim, 4)))
+    for path in list_of_document_vectors:
+        sim = calculate_similarity_vsm(query_vector, list_of_document_vectors[path])
+        sim_list.append((path, round(sim, 4)))
         i = i + 1
 
-    return sorted(simList, key=lambda tuple: tuple[1], reverse=True)
+    return sorted(sim_list, key=lambda tuple: tuple[1], reverse=True)

@@ -27,29 +27,29 @@ def normalize_text(text):
     stop_words = set(stopwords.words("english"))
     words = [w for w in words if not w in stop_words]
     # lemantize
-    lemen = []
+    lemantize = []
     #"v" for verbs
     #"a" for adjectives
     #"n" for nouns
     #"r" for adverbs
     for word in words:
         try:
-            tmp = wordnet.synsets(word)[0].pos()
-            if tmp == "v":
+            temp = wordnet.synsets(word)[0].pos()
+            if temp == "v":
                 word = WordNetLemmatizer().lemmatize(word, "v")
-            if tmp == "a":
+            if temp == "a":
                 word = WordNetLemmatizer().lemmatize(word, "a")
-            if tmp == "n":
+            if temp == "n":
                 word = WordNetLemmatizer().lemmatize(word, "n")
-            if tmp == "r":
+            if temp == "r":
                 word = WordNetLemmatizer().lemmatize(word, "r")
 
-            lemen.append(word)
+            lemantize.append(word)
         except:
-            lemen.append(word)
+            lemantize.append(word)
             # If an exception occurs during the lemmatization attempt, it defaults to just keeping the original word.
 
-    return lemen
+    return lemantize
 
 
 # Example usage

@@ -1,4 +1,4 @@
-from vectorization import getAllVectors
+
 from pprint import pprint
 
 

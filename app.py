@@ -1,6 +1,6 @@
 import time
 import xml.etree.ElementTree as ET
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response , jsonify
 from functions.vectorization import *
 from functions.VSM_Similarity import *
 from functions.preprocessing import *
@@ -52,9 +52,8 @@ XMLpaths1 = [
     "XMLdocuments1/food34.xml",
     "XMLdocuments1/food35.xml",
     "XMLdocuments1/food36.xml",
+    "XMLdocuments1/me.xml",
 ]
-
-
 
 vectors = getAllVectors(XMLpaths1)
 indexTable = getIndexingTable(vectors)
@@ -74,18 +73,21 @@ def main():
         queryVector = {}
         queryResult = []
 
-        if request.form["queryType"] == "text":
-            queryVector = getTextQueryVector(request.form["query"])
-        else:
-            tree = ET.ElementTree(ET.fromstring(request.form["query"]))
-            root = tree.getroot()
-            getVectorWithTF(root, "", queryVector)
+        try:
+            if request.form["queryType"] == "text":
+                queryVector = getTextQueryVector(request.form["query"])
+            else:
+                tree = ET.ElementTree(ET.fromstring(request.form["query"]))
+                root = tree.getroot()
+                getVectorWithTF(root, "", queryVector)
 
-        if request.form["simType"] == "VSM":
-            newVectorList = getDocumentFromIndex(indexTable, queryVector, vectors)
-            queryResult = getAllSimVSM(queryVector, newVectorList)
+            if request.form["simType"] == "VSM":
+                newVectorList = getDocumentFromIndex(indexTable, queryVector, vectors)
+                queryResult = calculate_all_similarities_vsm(queryVector, newVectorList)
+        except ET.ParseError as e:
+            error_message = "Error: This is not a valid XML. Please check your input."
+            return jsonify({"error": error_message})
         
-
         timeAfter = time.time()
 
         print("Query Vector")
