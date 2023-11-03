@@ -1,21 +1,16 @@
 import string
-
 import nltk
 
-#nltk.download("punkt")
-#nltk.download("wordnet")
-#nltk.download("stopwords")
+nltk.download("punkt")
+nltk.download("stopwords")
 
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from nltk.corpus import wordnet
 from nltk.stem.porter import PorterStemmer
-from nltk.stem import WordNetLemmatizer 
-
 
 def normalize_text(text):
 
-    tokens = word_tokenize( text)
+    tokens = word_tokenize(text)
     # convert to lower case
     tokens = [w.lower() for w in tokens]
     # remove punctuation from each word
@@ -26,37 +21,16 @@ def normalize_text(text):
     # filter out stop words
     stop_words = set(stopwords.words("english"))
     words = [w for w in words if not w in stop_words]
-    # lemantize
-    lemantize = []
-    #"v" for verbs
-    #"a" for adjectives
-    #"n" for nouns
-    #"r" for adverbs
-    for word in words:
-        try:
-            temp = wordnet.synsets(word)[0].pos()
-            if temp == "v":
-                word = WordNetLemmatizer().lemmatize(word, "v")
-            if temp == "a":
-                word = WordNetLemmatizer().lemmatize(word, "a")
-            if temp == "n":
-                word = WordNetLemmatizer().lemmatize(word, "n")
-            if temp == "r":
-                word = WordNetLemmatizer().lemmatize(word, "r")
+    # stem the words
+    stemmer = PorterStemmer()
+    stemmed = [stemmer.stem(word) for word in words]
 
-            lemantize.append(word)
-        except:
-            lemantize.append(word)
-            # If an exception occurs during the lemmatization attempt, it defaults to just keeping the original word.
-
-    return lemantize
-
+    return stemmed
 
 # Example usage
-input_text = 'I like eating apple'
+input_text = 'I like eating apples'
  
 # Preprocess the input documents
 normalized_input = normalize_text(input_text)
 
-print("\ntokens:\n" , normalized_input)
-
+print("\ntokens:\n", normalized_input)
