@@ -1,6 +1,7 @@
 import math
 from pprint import pprint
-from functions.path_Sim import getSimPath
+from .path_Sim import getSimPath
+
 
 def calculate_similarity_vsm(query_vector, document_vector):
     num = 0
@@ -25,6 +26,7 @@ def calculate_similarity_vsm(query_vector, document_vector):
         sum_vector2 = sum_vector2 + document_vector[dimension] ** 2
 
     return num / math.sqrt(sum_vector1 * sum_vector2)
+
 
 # The following method calculates the similarity of the query vector with each document in the
 # list of document vectors provided and sorts them in decreasing order.

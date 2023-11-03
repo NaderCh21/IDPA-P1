@@ -1,7 +1,11 @@
 # Importing necessary libraries and modules
 import xml.etree.ElementTree as ET  # For XML parsing
 import math  # For mathematical operations
+<<<<<<< HEAD
 from functions.preprocessing import *  # Importing all functions from preprocessing module
+=======
+from .preprocessing import *  # Importing all functions from preprocessing module
+>>>>>>> e4fa28b6863c203a0d6a9ae7e450dbd515a0e6d1
 from pprint import pprint  # For pretty printing
 
 # Wd(ti) = TF(ti, D) * IDF(ti, C)
@@ -50,8 +54,6 @@ def _handle_text(text, path, vector):
         _update_vector(
             wordlist, wordPath, vector
         )  # Updating the vector with normalized words
-    else:
-        print("not text")
 
 
 # Function to handle attributes of XML tags and update the vector
