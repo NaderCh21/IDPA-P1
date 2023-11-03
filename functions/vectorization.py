@@ -120,6 +120,6 @@ def getAllVectors(XMLpaths):
 XMLpaths=["XMLdocuments1/city1.xml" , "XMLdocuments1/city2.xml"]
 
 getAllVectors(XMLpaths)
-query = getTextQueryVector("Bosphorus Istanbul")
+query = getTextQueryVector("hotel")
 
 pprint(query)
