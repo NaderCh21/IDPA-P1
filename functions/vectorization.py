@@ -1,7 +1,7 @@
 # Importing necessary libraries and modules
 import xml.etree.ElementTree as ET  # For XML parsing
 import math  # For mathematical operations
-from preprocessing import *  # Importing all functions from preprocessing module
+from .preprocessing import *  # Importing all functions from preprocessing module
 from pprint import pprint  # For pretty printing
 
 # Wd(ti) = TF(ti, D) * IDF(ti, C)

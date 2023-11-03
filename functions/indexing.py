@@ -1,6 +1,4 @@
-
 from pprint import pprint
-
 
 # Helper function to update the indexing table
 def updateIndexingTable(out, term, path):
