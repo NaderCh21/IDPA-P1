@@ -50,8 +50,6 @@ def _handle_text(text, path, vector):
         _update_vector(
             wordlist, wordPath, vector
         )  # Updating the vector with normalized words
-    else:
-        print("not text")
 
 
 # Function to handle attributes of XML tags and update the vector
